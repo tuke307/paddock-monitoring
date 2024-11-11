@@ -1,5 +1,5 @@
 {
-  "name": "expressjs-typescript-prisma-boilerplate",
+  "name": "paddock-api",
   "version": "2.0.4",
   "description": "expressjs typescript boilerplate with prisma",
   "exports": "./index.js",
