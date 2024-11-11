@@ -1,16 +1,18 @@
+const eslintPluginUnicorn = require('eslint-plugin-unicorn');
+const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
+const globals = require('globals');
+
 module.exports = [
   {
-    env: {
-      node: true,
-      es2021: true,
+    languageOptions: {
+      globals: {
+        ...globals.builtin,
+        ...globals.node,
+      },
     },
-    plugins: ['unicorn', 'prettier'],
-    extends: ['standard-with-typescript', 'plugin:prettier/recommended'],
-    overrides: [],
-    parserOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      project: './tsconfig.eslint.json',
+    plugins: {
+      unicorn: eslintPluginUnicorn,
+
     },
     rules: {
       'prettier/prettier': ['error'],
@@ -24,8 +26,22 @@ module.exports = [
       '@typescript-eslint/no-extraneous-class': 'off',
       '@typescript-eslint/no-misused-promises': 'off',
       '@typescript-eslint/strict-boolean-expressions': 'off',
-      'import/order': 'error',
     },
-    ignorePatterns: [],
+    ignores: [
+      ".commitlintrc*",
+      ".docker",
+      ".eslintcache",
+      ".eslintrc*",
+      ".prettierrc*",
+      "node_modules",
+      "coverage",
+      "dist",
+      "logs",
+      "package-lock.json",
+      "yarn.lock",
+      "public",
+      "jest.config.*"
+    ],
   },
+  eslintPluginPrettierRecommended
 ];
