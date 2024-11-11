@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Microcontroller {
+  id           Int      @id @default(autoincrement())
+  name         String   @unique
+  location     String?
+  manufacturer String?
+  masterChip   String?
+  serialNumber String?  @unique
+  macAddress   String?  @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  sensors Sensor[]
+}
+
+enum SensorType {
+  TEMPERATURE
+}
+
+model Sensor {
+  id                Int        @id @default(autoincrement())
+  name              String
+  type              SensorType @default(TEMPERATURE)
+  location          String?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  microcontrollerId Int
+
+  measurements    Measurement[]
+  microcontroller Microcontroller @relation(fields: [microcontrollerId], references: [id])
+
+  @@index([id])
+}
+
+model Measurement {
+  id        Int      @id @default(autoincrement())
+  value     Float
+  timestamp DateTime @default(now())
+  sensorId  Int
+
+  sensor Sensor @relation(fields: [sensorId], references: [id])
+
+  @@index([sensorId, timestamp])
+}
