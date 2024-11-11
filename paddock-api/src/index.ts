@@ -18,7 +18,6 @@ server.listen(process.env.PORT, () => {
 });
 
 process.on('SIGINT', () => {
-  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   prismaClient.$disconnect();
   console.log('Prisma Disconnected.');
   process.exit(0);

@@ -4,8 +4,6 @@ import LogMessage from '@/decorators/log-message.decorator';
 
 export default class MeasurementService {
   public async createMeasurement(data: Measurement): Promise<Measurement> {
-    console.log('Creating measurement');
-    console.log(data);
     const measurement = await prisma.measurement.create({ data });
     return measurement;
   }

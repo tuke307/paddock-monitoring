@@ -1,5 +1,5 @@
 import util from 'util';
-import { type NextFunction, type Request, type Response } from 'express';
+import { type Request, type Response } from 'express';
 import { HttpStatusCode } from 'axios';
 import { type ApiError } from '@/lib/errors';
 import logger from '@/lib/logger';
@@ -12,12 +12,7 @@ interface ErrorBody {
   stack?: string;
 }
 
-const errorHandler = (
-  err: ApiError,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const errorHandler = (err: ApiError, req: Request, res: Response) => {
   logger.error(`Request Error:
         \nError:\n${JSON.stringify(err)}
         \nHeaders:\n${util.inspect(req.headers)}
