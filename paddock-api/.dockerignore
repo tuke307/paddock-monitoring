@@ -1,0 +1,31 @@
+# Ignore node_modules and local dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Ignore built files
+dist
+coverage
+
+# Exclude build config files
+*.config.js
+
+# Ignore other potentially unnecessary files and directories
+.DS_Store
+*.md
+.env*
+.idea
+.vscode
+*.log
+*.ts
+*.tsx
+test/
+jest.config.*.ts
+.git*
+**/*.pyc
+.vscode/
+.venv/
+Dockerfile
+.dockerignore
+README.md
+docker.compose.yml
