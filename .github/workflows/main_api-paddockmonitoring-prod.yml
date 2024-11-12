@@ -7,8 +7,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'paddock-api/**'
   workflow_dispatch:
 
 jobs:
@@ -17,8 +15,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      with:
-        path: paddock-api
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
@@ -27,16 +23,15 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: https://tonylukeregistry.azurecr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_89b73bd5f3e642038ccb25623ee46ad7 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_8a8f3308cf1e43628b86acaf8c72c979 }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_ebb858e3622847968a9c7e8b1e307954 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_6bc6076ec6264858a11adf4292486ba6 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
-        context: '{{defaultContext}}:paddock-api'
         push: true
-        tags: tonylukeregistry.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_89b73bd5f3e642038ccb25623ee46ad7 }}/tonylukeregistry/paddock-monitoring/api:${{ github.sha }}
-        file: Dockerfile
+        tags: tonylukeregistry.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_ebb858e3622847968a9c7e8b1e307954 }}/paddock-monitoring/api:${{ github.sha }}
+        file: ./Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
@@ -52,5 +47,5 @@ jobs:
       with:
         app-name: 'api-paddockmonitoring-prod'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_f350b57bb010426ab3e50fb32971c19d }}
-        images: 'tonylukeregistry.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_89b73bd5f3e642038ccb25623ee46ad7 }}/tonylukeregistry/paddock-monitoring/api:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_4f9903dab1f2435dab523ed05fe75f28 }}
+        images: 'tonylukeregistry.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_ebb858e3622847968a9c7e8b1e307954 }}/paddock-monitoring/api:${{ github.sha }}'
