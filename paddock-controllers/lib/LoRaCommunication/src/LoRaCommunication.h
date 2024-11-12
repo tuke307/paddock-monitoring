@@ -9,7 +9,7 @@ void init();
 void loop();
 
 #if defined(ROLE_SENDER)
-bool sendMessage(const String& message);
+bool sendMessage(String& message);
 #elif defined(ROLE_RECEIVER)
 bool isMessageAvailable();
 String getMessage();

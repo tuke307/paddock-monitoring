@@ -1,9 +1,9 @@
-#include <Common.h>
 #include <Arduino.h>
 #include "LoRaCommunication.h"
 #include "WiFiConnector.h"
 #include "ApiClient.h"
 #include <ArduinoJson.h>
+#include "Common.h"
 
 void setup() {
     Serial.begin(115200);

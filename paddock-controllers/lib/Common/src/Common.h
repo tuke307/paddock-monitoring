@@ -9,14 +9,15 @@
 #define API_URL "http://API_URL:API_PORT/api/v1/development/measurements/create"
 
 // LoRa communication parameters (common to all devices)
-#define RF_FREQUENCY 915000000
-#define TX_OUTPUT_POWER 14
-#define LORA_BANDWIDTH 0
-#define LORA_SPREADING_FACTOR 12
-#define LORA_CODINGRATE 1
-#define LORA_PREAMBLE_LENGTH 8
-#define LORA_SYMBOL_TIMEOUT 0
-#define LORA_FIX_LENGTH_PAYLOAD_ON false
-#define LORA_IQ_INVERSION_ON false
+#define LORA_FREQUENCY 868.0  // MHz (Adjust according to your region)
+#define LORA_BANDWIDTH 125.0  // kHz
+#define LORA_SPREADING_FACTOR 7
+#define LORA_CODING_RATE 5    // 4/5
+
+// SX1262 pin configuration for Heltec WiFi LoRa 32 (adjust if necessary)
+#define LORA_CS_PIN    18
+#define LORA_RST_PIN   14
+#define LORA_IRQ_PIN   26
+#define LORA_BUSY_PIN  25
 
 #endif // COMMON_H

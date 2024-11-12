@@ -1,8 +1,7 @@
-#include <Common.h>
 #include <Arduino.h>
 #include "LoRaCommunication.h"
 #include <ArduinoJson.h>
-
+#include "Common.h"
 
 void setup() {
     Serial.begin(115200);
@@ -37,7 +36,4 @@ void loop() {
 
     // Wait for a minute before sending the next message
     delay(60000 - randomDelay);
-
-    // Process LoRa events
-    LoRaCommunication::loop();
 }

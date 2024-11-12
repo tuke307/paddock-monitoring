@@ -1,115 +1,100 @@
-#include <Common.h> 
 #include "LoRaCommunication.h"
-#include "LoRaWan_APP.h"
-
+#include "Common.h"
+#include <RadioLib.h>
 
 namespace LoRaCommunication {
 
-// Use parameters from Common.h
-// (Constants are defined in Common.h)
+// Create an instance of the SX1262 class
+SX1262 radio = new Module(LORA_CS_PIN, LORA_IRQ_PIN, LORA_RST_PIN, LORA_BUSY_PIN);
 
-// LoRa event handlers
-static RadioEvents_t RadioEvents;
-
+// Variables for receiving data
 #if defined(ROLE_RECEIVER)
-static char rxpacket[256];
-static bool lora_idle = true;
-static bool messageAvailable = false;
-static String receivedMessage;
+volatile bool receivedFlag = false;
+String receivedMessage = "";
 
-void OnRxDone(uint8_t* payload, uint16_t size, int16_t rssi, int8_t snr) {
-    memcpy(rxpacket, payload, size);
-    rxpacket[size] = '\0';
-    Radio.Sleep();
-    Serial.printf("\r\nReceived packet: \"%s\" with RSSI %d, length %d\r\n", rxpacket, rssi, size);
-    receivedMessage = String(rxpacket);
-    messageAvailable = true;
-    lora_idle = true;
+void setFlag(void) {
+    receivedFlag = true;
 }
-
-void OnTxDone(void) {
-    // Not used in receiver
-}
-
-#elif defined(ROLE_SENDER)
-static char txpacket[256];
-static bool lora_busy = false;
-
-void OnTxDone(void) {
-    Serial.println("Transmission completed");
-    Radio.Sleep();
-    lora_busy = false;
-}
-
-void OnRxDone(uint8_t* payload, uint16_t size, int16_t rssi, int8_t snr) {
-    // Not used in sender
-}
-
 #endif
 
 void init() {
-    Mcu.begin(HELTEC_BOARD, SLOW_CLK_TPYE);
+    Serial.println("[LoRa] Initializing LoRa Radio...");
 
-    RadioEvents.TxDone = OnTxDone;
-    RadioEvents.RxDone = OnRxDone;
+    int state = radio.begin(
+        LORA_FREQUENCY,
+        LORA_BANDWIDTH,
+        LORA_SPREADING_FACTOR,
+        LORA_CODING_RATE,
+        RADIOLIB_SX126X_SYNC_WORD_PRIVATE, // Private sync word
+        22, // TX power in dBm
+        8   // Preamble length
+    );
 
-    Radio.Init(&RadioEvents);
-    Radio.SetChannel(RF_FREQUENCY);
+    if (state != RADIOLIB_ERR_NONE) {
+        Serial.print("[LoRa] Failed to initialize radio: ");
+        Serial.println(state);
+        while (true);
+    }
 
-#if defined(ROLE_SENDER)
-    Radio.SetTxConfig(MODEM_LORA, TX_OUTPUT_POWER, 0, LORA_BANDWIDTH,
-                      LORA_SPREADING_FACTOR, LORA_CODINGRATE,
-                      LORA_PREAMBLE_LENGTH, LORA_FIX_LENGTH_PAYLOAD_ON,
-                      true, 0, 0, LORA_IQ_INVERSION_ON, 3000);
-#elif defined(ROLE_RECEIVER)
-    Radio.SetRxConfig(MODEM_LORA, LORA_BANDWIDTH, LORA_SPREADING_FACTOR,
-                      LORA_CODINGRATE, 0, LORA_PREAMBLE_LENGTH,
-                      LORA_SYMBOL_TIMEOUT, LORA_FIX_LENGTH_PAYLOAD_ON,
-                      0, true, 0, 0, LORA_IQ_INVERSION_ON, true);
-    lora_idle = true;
-#endif
+    Serial.println("[LoRa] Radio initialized.");
+
+    #if defined(ROLE_RECEIVER)
+    // Set up the receive interrupt
+    radio.setDio1Action(setFlag);
+    // Start listening for incoming transmissions
+    state = radio.startReceive();
+    if (state != RADIOLIB_ERR_NONE) {
+        Serial.print("[LoRa] Failed to start receiver: ");
+        Serial.println(state);
+        while (true);
+    }
+    #endif
 }
 
 void loop() {
-#if defined(ROLE_RECEIVER)
-    if (lora_idle) {
-        lora_idle = false;
-        Serial.println("Entering RX mode");
-        Radio.Rx(0);
+    #if defined(ROLE_RECEIVER)
+    if (receivedFlag) {
+        receivedFlag = false;
+
+        int state = radio.readData(receivedMessage);
+        if (state == RADIOLIB_ERR_NONE) {
+            Serial.print("[LoRa] Received message: ");
+            Serial.println(receivedMessage);
+        } else {
+            Serial.print("[LoRa] Failed to read data: ");
+            Serial.println(state);
+        }
+
+        // Restart listening
+        radio.startReceive();
     }
-    Radio.IrqProcess();
-#elif defined(ROLE_SENDER)
-    Radio.IrqProcess();
-#endif
+    #endif
 }
 
 #if defined(ROLE_SENDER)
-bool sendMessage(const String& message) {
-    if (lora_busy) {
-        Serial.println("LoRa is busy");
+bool sendMessage(String& message) {
+    Serial.print("[LoRa] Sending message: ");
+    Serial.println(message);
+
+    int state = radio.transmit(message);
+    if (state == RADIOLIB_ERR_NONE) {
+        Serial.println("[LoRa] Message sent successfully.");
+        return true;
+    } else {
+        Serial.print("[LoRa] Failed to send message: ");
+        Serial.println(state);
         return false;
     }
-
-    lora_busy = true;
-    message.toCharArray(txpacket, sizeof(txpacket));
-    Serial.print("Sending packet: ");
-    Serial.println(txpacket);
-
-    Radio.Send((uint8_t*)txpacket, strlen(txpacket));
-    return true;
 }
-
 #elif defined(ROLE_RECEIVER)
 bool isMessageAvailable() {
-    if (messageAvailable) {
-        messageAvailable = false; // Reset flag for next message
-        return true;
-    }
-    return false;
+    return !receivedMessage.isEmpty();
 }
 
 String getMessage() {
-    return receivedMessage;
+    String msg = receivedMessage;
+    receivedMessage = "";
+    return msg;
 }
 #endif
 
