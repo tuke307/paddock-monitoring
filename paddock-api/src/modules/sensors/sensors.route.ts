@@ -13,6 +13,7 @@ const controller = new Controller();
  * @property {string} name.required - name of sensor
  * @property {string} type.required - type of sensor
  * @property {string} location - location of sensor
+ * @property {number} microcontrollerId.required - microcontroller id of sensor
  */
 /**
  * Sensor
@@ -23,6 +24,7 @@ const controller = new Controller();
  * @property {string} location - location of sensor
  * @property {string} createdAt - created at of sensor
  * @property {string} updatedAt - updated at of sensor
+ * @property {number} microcontrollerId - microcontroller id of sensor
  */
 /**
  * POST /sensors/create
