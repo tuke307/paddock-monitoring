@@ -15,6 +15,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        path: paddock-api
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
@@ -29,9 +31,10 @@ jobs:
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
+        context: paddock-api
         push: true
         tags: tonylukeregistry.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_89b73bd5f3e642038ccb25623ee46ad7 }}/tonylukeregistry/paddock-monitoring/api:${{ github.sha }}
-        file: ./Dockerfile
+        file: paddock-api/Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
