@@ -1,4 +1,4 @@
-import { IsMACAddress, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsMACAddress, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateMicrocontrollerDto {
   @IsNotEmpty()
@@ -28,4 +28,8 @@ export class CreateMicrocontrollerDto {
   @IsOptional()
   @IsMACAddress()
   macAddress?: string;
+
+  @IsOptional()
+  @IsNumber()
+  paddockId: number;
 }

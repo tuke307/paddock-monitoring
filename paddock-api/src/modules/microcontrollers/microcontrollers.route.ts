@@ -17,6 +17,7 @@ const controller = new Controller();
  * @property {string} location - location of microcontroller
  * @property {string} serialNumber - serial number of microcontroller
  * @property {string} macAddress - mac address of microcontroller
+ * @property {string} paddockId - paddock id of microcontroller
  */
 /**
  * Microcontroller
@@ -31,6 +32,7 @@ const controller = new Controller();
  * @property {string} macAddress - mac address of microcontroller
  * @property {string} createdAt - created at of microcontroller
  * @property {string} updatedAt - updated at of microcontroller
+ * @property {number} paddockId - paddock id of microcontroller
  */
 /**
  * POST /microcontrollers/create

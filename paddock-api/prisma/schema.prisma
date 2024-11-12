@@ -10,6 +10,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Paddock {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  shape       Json? // GeoJSON for paddock boundaries
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  microcontrollers Microcontroller[]
+}
+
 model Microcontroller {
   id           Int      @id @default(autoincrement())
   name         String   @unique
@@ -21,7 +32,9 @@ model Microcontroller {
   macAddress   String?  @unique
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  paddockId    Int?
 
+  paddock Paddock? @relation(fields: [paddockId], references: [id])
   sensors Sensor[]
 }
 
