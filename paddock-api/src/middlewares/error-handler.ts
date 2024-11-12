@@ -1,5 +1,10 @@
 import util from 'util';
-import { type Request, type Response, type NextFunction } from 'express';
+import {
+  type Request,
+  type Response,
+  type NextFunction,
+  type ErrorRequestHandler,
+} from 'express';
 import { HttpStatusCode } from 'axios';
 import { type ApiError } from '@/lib/errors';
 import logger from '@/lib/logger';
@@ -33,7 +38,12 @@ const safeStringify = (obj: any): string => {
   }
 };
 
-const errorHandler = (err: ApiError, req: Request, res: Response, next: NextFunction) => {
+const errorHandler: ErrorRequestHandler = (
+  err: ApiError,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   // Create a sanitized error object for logging
   const sanitizedError = {
     message: err.message,
@@ -60,7 +70,7 @@ const errorHandler = (err: ApiError, req: Request, res: Response, next: NextFunc
     errorBody.stack = err.stack;
   }
 
-  return res.status(status).json(errorBody);
+  res.status(status).json(errorBody);
 };
 
 export default errorHandler;

@@ -1,4 +1,10 @@
-import { IsMACAddress, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsMACAddress,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateMicrocontrollerDto {
   @IsNotEmpty()
