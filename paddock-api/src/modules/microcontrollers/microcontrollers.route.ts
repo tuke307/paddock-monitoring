@@ -13,6 +13,7 @@ const controller = new Controller();
  * @property {string} name - name of microcontroller
  * @property {string} manufacturer - manufacturer of microcontroller
  * @property {string} masterChip - master chip of microcontroller
+ * @property {string} loraChip - lora chip of microcontroller
  * @property {string} location - location of microcontroller
  * @property {string} serialNumber - serial number of microcontroller
  * @property {string} macAddress - mac address of microcontroller
@@ -24,6 +25,7 @@ const controller = new Controller();
  * @property {string} name - name of microcontroller
  * @property {string} manufacturer - manufacturer of microcontroller
  * @property {string} masterChip - master chip of microcontroller
+ * @property {string} loraChip - lora chip of microcontroller
  * @property {string} location - location of microcontroller
  * @property {string} serialNumber - serial number of microcontroller
  * @property {string} macAddress - mac address of microcontroller

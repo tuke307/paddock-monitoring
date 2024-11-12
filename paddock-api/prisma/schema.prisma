@@ -16,6 +16,7 @@ model Microcontroller {
   location     String?
   manufacturer String?
   masterChip   String?
+  loraChip     String?
   serialNumber String?  @unique
   macAddress   String?  @unique
   createdAt    DateTime @default(now())

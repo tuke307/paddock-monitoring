@@ -14,6 +14,10 @@ export class CreateMicrocontrollerDto {
 
   @IsOptional()
   @IsString()
+  loraChip?: string;
+
+  @IsOptional()
+  @IsString()
   location?: string;
 
   @IsOptional()
