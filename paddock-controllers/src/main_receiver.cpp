@@ -34,7 +34,7 @@ void loop() {
         int sensorId;
 
         // Assuming the message is JSON formatted
-        DynamicJsonDocument doc(256);
+        JsonDocument doc;
         DeserializationError error = deserializeJson(doc, message);
         if (error) {
             Serial.print(F("deserializeJson() failed: "));

@@ -14,7 +14,7 @@ void setup() {
 
 void loop() {
     // Prepare the data to send
-    DynamicJsonDocument doc(256);
+    JsonDocument doc;
     doc["value"] = 22.2; // Replace with actual sensor reading
     doc["timestamp"] = "2020-11-16T00:00:00Z"; // Replace with actual timestamp
     doc["sensorId"] = SENSOR_ID; // SENSOR_ID defined in build_flags

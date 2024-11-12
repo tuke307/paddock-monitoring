@@ -18,7 +18,7 @@ bool sendMeasurement(float value, const String& timestamp, int sensorId) {
         http.begin(API_URL);
         http.addHeader("Content-Type", "application/json");
 
-        StaticJsonDocument<256> doc;
+        JsonDocument doc;
         doc["value"] = value;
         doc["timestamp"] = timestamp;
         doc["sensorId"] = sensorId;
