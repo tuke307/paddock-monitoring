@@ -1,7 +1,8 @@
-import { IsOptional, IsString, IsEnum } from 'class-validator';
+import { IsOptional, IsString, IsEnum, IsNotEmpty } from 'class-validator';
 import { SensorType } from '@prisma/client';
 
 export class CreateSensorDto {
+  @IsNotEmpty()
   @IsString()
   name: string;
 

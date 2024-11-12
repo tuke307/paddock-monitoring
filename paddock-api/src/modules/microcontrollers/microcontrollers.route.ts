@@ -10,7 +10,7 @@ const controller = new Controller();
 /**
  * Create microcontroller body
  * @typedef {object} CreateMicrocontrollerBody
- * @property {string} name - name of microcontroller
+ * @property {string} name.required - name of microcontroller
  * @property {string} manufacturer - manufacturer of microcontroller
  * @property {string} masterChip - master chip of microcontroller
  * @property {string} loraChip - lora chip of microcontroller
