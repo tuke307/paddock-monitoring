@@ -33,10 +33,10 @@ jobs:
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
-        context: paddock-api
+        context: '{{defaultContext}}:paddock-api'
         push: true
         tags: tonylukeregistry.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_89b73bd5f3e642038ccb25623ee46ad7 }}/tonylukeregistry/paddock-monitoring/api:${{ github.sha }}
-        file: paddock-api/Dockerfile
+        file: Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
