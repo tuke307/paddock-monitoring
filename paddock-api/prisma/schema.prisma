@@ -14,7 +14,6 @@ model Paddock {
   id          Int      @id @default(autoincrement())
   name        String   @unique
   description String?
-  shape       Json? // GeoJSON for paddock boundaries
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -53,17 +52,13 @@ model Sensor {
 
   measurements    Measurement[]
   microcontroller Microcontroller @relation(fields: [microcontrollerId], references: [id])
-
-  @@index([id])
 }
 
 model Measurement {
   id        Int      @id @default(autoincrement())
   value     Float
-  timestamp DateTime @default(now())
   sensorId  Int
+  createdAt DateTime @default(now())
 
   sensor Sensor @relation(fields: [sensorId], references: [id])
-
-  @@index([sensorId, timestamp])
 }

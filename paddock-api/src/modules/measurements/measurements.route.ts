@@ -11,7 +11,6 @@ const controller = new Controller();
  * Create measurement body
  * @typedef {object} CreateMeasurementBody
  * @property {number} value.required - value of measurement
- * @property {string} timestamp.required - timestamp of measurement
  * @property {number} sensorId.required - sensor id
  */
 /**
@@ -19,7 +18,7 @@ const controller = new Controller();
  * @typedef {object} Measurement
  * @property {number} id - id of measurement
  * @property {number} value - value of measurement
- * @property {string} timestamp - timestamp of measurement
+ * @property {string} createdAt - created at timestamp
  * @property {number} sensorId - sensor id
  */
 /**

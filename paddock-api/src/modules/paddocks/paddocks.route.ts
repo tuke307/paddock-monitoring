@@ -12,7 +12,6 @@ const controller = new Controller();
  * @typedef {object} CreatePaddockBody
  * @property {string} name.required - name of paddock
  * @property {string} description.required - description of paddock
- * @property {string} shape - shape of paddock
  */
 /**
  * Paddock
@@ -20,7 +19,6 @@ const controller = new Controller();
  * @property {number} id - id of paddock
  * @property {string} name - name of paddock
  * @property {string} description - description of paddock
- * @property {string} shape - shape of paddock
  * @property {string} createdAt - created at of paddock
  * @property {string} updatedAt - updated at of paddock
  */
