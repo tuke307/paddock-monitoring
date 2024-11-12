@@ -6,7 +6,7 @@
 namespace ApiClient {
 
 void init();
-bool sendMeasurement(float value, const String& timestamp, int sensorId);
+bool sendMeasurement(float value, int sensorId);
 
 }
 

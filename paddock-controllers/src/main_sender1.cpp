@@ -1,10 +1,18 @@
 #include <Arduino.h>
-#include "LoRaCommunication.h"
 #include <ArduinoJson.h>
 #include "Common.h"
+#include "LoRaCommunication.h"
+#include "OLEDDisplay.h"
+
 
 void setup() {
     Serial.begin(115200);
+
+    // Initialize OLED display
+    OLEDDisplay::init();
+    OLEDDisplay::displayText("Initializing...");
+    delay(1000);
+
     // Initialize LoRa communication
     LoRaCommunication::init();
 
@@ -15,9 +23,8 @@ void setup() {
 void loop() {
     // Prepare the data to send
     JsonDocument doc;
-    doc["value"] = 22.2; // Replace with actual sensor reading
-    doc["timestamp"] = "2020-11-16T00:00:00Z"; // Replace with actual timestamp
-    doc["sensorId"] = SENSOR_ID; // SENSOR_ID defined in build_flags
+    doc["value"] = 23.5; // Replace with actual sensor reading
+    doc["sensorId"] = CONTROLLER_ID; // ToDo: implement sensor
 
     String message;
     serializeJson(doc, message);
@@ -28,11 +35,9 @@ void loop() {
 
     // Send the message
     bool success = LoRaCommunication::sendMessage(message);
-    if (success) {
-        Serial.println("Message sent successfully");
-    } else {
-        Serial.println("Failed to send message");
-    }
+    String statusMessage = success ? "LoRa Success" : "LoRa Failed";
+    Serial.println(statusMessage);
+    OLEDDisplay::displayDataAndStatus(CONTROLLER_ID, doc["value"], doc["sensorId"], statusMessage);
 
     // Wait for a minute before sending the next message
     delay(60000 - randomDelay);

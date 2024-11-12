@@ -11,7 +11,7 @@ void init() {
     // Any initialization if needed
 }
 
-bool sendMeasurement(float value, const String& timestamp, int sensorId) {
+bool sendMeasurement(float value, int sensorId) {
     if (WiFi.status() == WL_CONNECTED) {
         HTTPClient http;
 
@@ -20,7 +20,6 @@ bool sendMeasurement(float value, const String& timestamp, int sensorId) {
 
         JsonDocument doc;
         doc["value"] = value;
-        doc["timestamp"] = timestamp;
         doc["sensorId"] = sensorId;
 
         String requestBody;

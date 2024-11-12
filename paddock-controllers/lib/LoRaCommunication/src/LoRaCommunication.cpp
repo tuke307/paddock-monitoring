@@ -22,12 +22,13 @@ void init() {
 
     int state = radio.begin(
         LORA_FREQUENCY,
-        LORA_BANDWIDTH,
+        LORA_BANDWIDTH, 
         LORA_SPREADING_FACTOR,
         LORA_CODING_RATE,
         RADIOLIB_SX126X_SYNC_WORD_PRIVATE, // Private sync word
-        22, // TX power in dBm
-        8   // Preamble length
+        LORA_POWER,
+        LORA_PREAMBLE_LENGTH,
+        LORA_TCXO_VOLTAGE
     );
 
     if (state != RADIOLIB_ERR_NONE) {

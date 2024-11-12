@@ -1,12 +1,19 @@
 #include <Arduino.h>
-#include "LoRaCommunication.h"
-#include "WiFiConnector.h"
-#include "ApiClient.h"
 #include <ArduinoJson.h>
 #include "Common.h"
+#include "ApiClient.h"
+#include "WiFiConnector.h"
+#include "LoRaCommunication.h"
+#include "OLEDDisplay.h"
+
 
 void setup() {
     Serial.begin(115200);
+
+    // Initialize OLED display
+    OLEDDisplay::init();
+    OLEDDisplay::displayText("Initializing...");
+    delay(1000);
 
     // Initialize Wi-Fi connection
     WiFiConnector::connect();
@@ -30,7 +37,6 @@ void loop() {
 
         // Parse the message to extract value, timestamp, and sensorId
         float value;
-        String timestamp;
         int sensorId;
 
         // Assuming the message is JSON formatted
@@ -39,20 +45,19 @@ void loop() {
         if (error) {
             Serial.print(F("deserializeJson() failed: "));
             Serial.println(error.f_str());
+            OLEDDisplay::displayText("JSON Error");
             return;
         }
 
         value = doc["value"].as<float>();
-        timestamp = doc["timestamp"].as<String>();
         sensorId = doc["sensorId"].as<int>();
 
         // Send data to API
-        bool success = ApiClient::sendMeasurement(value, timestamp, sensorId);
-        if (success) {
-            Serial.println("Data sent to API successfully.");
-        } else {
-            Serial.println("Failed to send data to API.");
-        }
+        bool success = ApiClient::sendMeasurement(value, sensorId);
+
+        String statusMessage = success ? "API Success" : "API Failed";
+        Serial.println(statusMessage);
+        OLEDDisplay::displayDataAndStatus(CONTROLLER_ID, value, sensorId, statusMessage);
     }
 
     delay(100);
