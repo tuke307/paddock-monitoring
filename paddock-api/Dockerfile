@@ -13,6 +13,9 @@ RUN npm install
 # Copy the entire project except for excluded files in .dockerignore
 COPY . .
 
+# Copy and rename .env.example to .env
+COPY .env.example .env
+
 # Build the application
 RUN npm run build
 
@@ -27,6 +30,9 @@ COPY --from=build /app/package*.json ./
 COPY --from=build /app/dist /app/dist
 COPY --from=build /app/public /app/public
 COPY --from=build /app/node_modules /app/node_modules
+
+# Copy and rename .env.example to .env
+COPY .env.example .env
 
 # Expose the port
 EXPOSE 3000
