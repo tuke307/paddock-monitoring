@@ -20,6 +20,13 @@ export default class MeasurementService {
     return measurements;
   }
 
+  public async getNewestMeasurement(): Promise<Measurement | null> {
+    const measurement = await prisma.measurement.findFirst({
+      orderBy: { createdAt: 'desc' },
+    });
+    return measurement;
+  }
+
   public async getNewestMeasurementBySensor(sensorId: number): Promise<Measurement | null> {
     const measurement = await prisma.measurement.findFirst({
       where: { sensorId },

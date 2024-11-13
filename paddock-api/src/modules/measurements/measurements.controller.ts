@@ -29,40 +29,37 @@ export default class MeasurementController extends Api {
     next: NextFunction
   ) => {
     try {
-      const measurements = await this.measurementService.getAllMeasurements();
+      const sensorId = req.query.sensorId ? parseInt(req.query.sensorId as string, 10) : null;
+      let measurements: Measurement[];
+
+      if (sensorId) {
+        measurements = await this.measurementService.getMeasurementsBySensor(sensorId);
+      } else {
+        measurements = await this.measurementService.getAllMeasurements();
+      }
+
       this.send(res, measurements, HttpStatusCode.Ok, 'getAllMeasurements');
     } catch (e) {
       next(e);
     }
   };
 
-  public getMeasurementsBySensor = async (
-    req: Request,
-    res: CustomResponse<Measurement[]>,
-    next: NextFunction
-  ) => {
-    try {
-      const sensorId = parseInt(req.params.sensorId, 10);
-      const measurements = await this.measurementService.getMeasurementsBySensor(
-        sensorId
-      );
-      this.send(res, measurements, HttpStatusCode.Ok, 'getMeasurementsBySensor');
-    } catch (e) {
-      next(e);
-    }
-  }
-
-  public getNewestMeasurementBySensor = async (
+  public getNewestMeasurement = async (
     req: Request,
     res: CustomResponse<Measurement | null>,
     next: NextFunction
   ) => {
     try {
-      const sensorId = parseInt(req.params.sensorId, 10);
-      const measurement = await this.measurementService.getNewestMeasurementBySensor(
-        sensorId
-      );
-      this.send(res, measurement, HttpStatusCode.Ok, 'getNewestMeasurementBySensor');
+      const sensorId = req.query.sensorId ? parseInt(req.query.sensorId as string, 10) : null;
+      let measurement: Measurement | null;
+
+      if (sensorId) {
+        measurement = await this.measurementService.getNewestMeasurementBySensor(sensorId);
+      } else {
+        measurement = await this.measurementService.getNewestMeasurement();
+      }
+
+      this.send(res, measurement, HttpStatusCode.Ok, 'getNewestMeasurement');
     } catch (e) {
       next(e);
     }
