@@ -14,6 +14,7 @@ const MicrocontrollerList: React.FC<Props> = ({ paddockId }) => {
   const [microcontrollers, setMicrocontrollers] = useState<Microcontroller[]>([]);
 
   useEffect(() => {
+    // Fetch microcontrollers for the given paddock
     fetch(`${API_URL}/microcontrollers?paddockId=${paddockId}`)
       .then(response => response.json())
       .then(json => setMicrocontrollers(json.data))

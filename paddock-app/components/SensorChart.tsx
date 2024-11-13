@@ -13,6 +13,7 @@ const SensorChart: React.FC<Props> = ({ sensorId }) => {
   const [measurements, setMeasurements] = useState<Measurement[]>([]);
 
   useEffect(() => {
+    // Fetch measurements for the given sensor
     fetch(`${API_URL}/measurements?sensorId=${sensorId}`)
       .then(response => response.json())
       .then(json => setMeasurements(json.data))
