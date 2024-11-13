@@ -16,4 +16,13 @@ export default class MicrocontrollerService {
     const microcontrollers = await prisma.microcontroller.findMany();
     return microcontrollers;
   }
+
+  public async getMicrocontrollersByPaddock(paddockId: number): Promise<Microcontroller[]> {
+    const microcontrollers = await prisma.microcontroller.findMany({
+      where: {
+        paddockId,
+      },
+    });
+    return microcontrollers;
+  }
 }

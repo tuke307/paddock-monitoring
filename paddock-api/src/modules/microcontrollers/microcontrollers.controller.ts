@@ -33,8 +33,15 @@ export default class MicrocontrollerController extends Api {
     next: NextFunction
   ) => {
     try {
-      const microcontrollers =
-        await this.microcontrollerService.getAllMicrocontrollers();
+      const paddockId = req.query.paddockId ? parseInt(req.query.paddockId as string, 10) : null;
+      let microcontrollers: Microcontroller[];
+
+      if (paddockId) {
+        microcontrollers = await this.microcontrollerService.getMicrocontrollersByPaddock(paddockId);
+      } else {
+        microcontrollers = await this.microcontrollerService.getAllMicrocontrollers();
+      }
+
       this.send(
         res,
         microcontrollers,

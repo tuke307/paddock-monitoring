@@ -52,6 +52,7 @@ microcontrollers.post(
  * GET /microcontrollers
  * @summary Get all microcontrollers
  * @tags microcontrollers
+ * @param {number} [paddockId.query] - Optional paddock ID to filter microcontrollers
  * @return {Array.<Microcontroller>} 200 - microcontrollers
  */
 microcontrollers.get('/', verifyAuthToken, controller.getAllMicrocontrollers);
