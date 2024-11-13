@@ -3,13 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Dimensions, View, Text } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import { API_URL } from '@/constants/api';
-
-interface Measurement {
-  id: number;
-  value: number;
-  timestamp: string;
-  sensorId: number;
-}
+import Measurement from '@/types/Measurement';
 
 interface Props {
   sensorId: number;
@@ -30,7 +24,7 @@ const SensorChart: React.FC<Props> = ({ sensorId }) => {
   }
 
   const data = {
-    labels: measurements.map((m) => new Date(m.timestamp).toLocaleTimeString()),
+    labels: measurements.map((m) => new Date(m.createdAt).toLocaleTimeString()),
     datasets: [
       {
         data: measurements.map((m) => m.value),
