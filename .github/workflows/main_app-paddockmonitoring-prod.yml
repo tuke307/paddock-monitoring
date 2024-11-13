@@ -7,6 +7,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'paddock-app/**'
   workflow_dispatch:
 
 jobs:
@@ -15,6 +17,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        path: paddock-app
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
@@ -29,6 +33,7 @@ jobs:
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
+        context: '{{defaultContext}}:paddock-app'
         push: true
         tags: tonylukeregistry.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_c9d0f41178d140d4bfafabb0334adeb3 }}/paddock-monitoring/app:${{ github.sha }}
         file: ./Dockerfile
