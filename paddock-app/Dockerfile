@@ -16,9 +16,6 @@ RUN npm install
 # Copy project files
 COPY . .
 
-# Copy and rename .env.example to .env
-COPY .env.example .env
-
 # Build the web version
 RUN npx expo export -p web
 
@@ -28,8 +25,6 @@ FROM node:18-alpine AS serve
 # Copy build files from previous stage
 WORKDIR /app
 COPY --from=build /app/dist /app
-
-COPY .env.example .env
 
 # Expose port 3000
 EXPOSE 3000
