@@ -6,7 +6,7 @@
 #define WIFI_PASSWORD "your-password"
 
 // API endpoint (used by the receiver)
-#define API_URL "https://api-paddockmonitoring-prod-ewe8e3g4h7egh7gq.westeurope-01.azurewebsites.net:443/api/v1/production/measurements/create"
+#define API_URL "https://api-paddockmonitoring-prod.azurewebsites.net:443/api/v1/production/measurements/create"
 
 // LoRa communication parameters (common to all devices)
 #define LORA_FREQUENCY          868.0   // MHz
