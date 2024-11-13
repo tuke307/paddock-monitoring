@@ -35,4 +35,36 @@ export default class MeasurementController extends Api {
       next(e);
     }
   };
+
+  public getMeasurementsBySensor = async (
+    req: Request,
+    res: CustomResponse<Measurement[]>,
+    next: NextFunction
+  ) => {
+    try {
+      const sensorId = parseInt(req.params.sensorId, 10);
+      const measurements = await this.measurementService.getMeasurementsBySensor(
+        sensorId
+      );
+      this.send(res, measurements, HttpStatusCode.Ok, 'getMeasurementsBySensor');
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public getNewestMeasurementBySensor = async (
+    req: Request,
+    res: CustomResponse<Measurement | null>,
+    next: NextFunction
+  ) => {
+    try {
+      const sensorId = parseInt(req.params.sensorId, 10);
+      const measurement = await this.measurementService.getNewestMeasurementBySensor(
+        sensorId
+      );
+      this.send(res, measurement, HttpStatusCode.Ok, 'getNewestMeasurementBySensor');
+    } catch (e) {
+      next(e);
+    }
+  }
 }

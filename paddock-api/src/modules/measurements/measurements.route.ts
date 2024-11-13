@@ -43,4 +43,22 @@ measurements.post(
  */
 measurements.get('/', verifyAuthToken, controller.getAllMeasurements);
 
+/**
+ * GET /measurements/:sensorId
+ * @summary Get all measurements by sensor
+ * @tags measurements
+ * @param {number} sensorId.path.required - sensor ID
+ * @return {Array.<Measurement>} 200 - measurements
+ */
+measurements.get('/:sensorId', verifyAuthToken, controller.getMeasurementsBySensor);
+
+/**
+ * GET /measurements/:sensorId/newest
+ * @summary Get the newest measurement by sensor
+ * @tags measurements
+ * @param {number} sensorId.path.required - sensor ID
+ * @return {Measurement} 200 - newest measurement
+ */
+measurements.get('/:sensorId/newest', verifyAuthToken, controller.getNewestMeasurementBySensor);
+
 export default measurements;
