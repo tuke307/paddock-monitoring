@@ -19,4 +19,9 @@ web-build/
 expo-env.d.ts
 # @end expo-cli
 
+# Environmental variables
 .env
+.env.dev
+.env.test
+.env.stage
+.env.prod
