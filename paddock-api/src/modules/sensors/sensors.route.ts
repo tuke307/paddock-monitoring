@@ -44,6 +44,7 @@ sensors.post(
  * GET /sensors
  * @summary Get all sensors
  * @tags sensors
+ * @param {number} [microcontrollerId.query] - Optional microcontroller ID to filter sensors
  * @return {Array.<Sensor>} 200 - sensors
  */
 sensors.get('/', verifyAuthToken, controller.getAllSensors);

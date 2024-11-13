@@ -12,4 +12,13 @@ export default class SensorService {
     const sensors = await prisma.sensor.findMany();
     return sensors;
   }
+
+  public async getSensorsByMicrocontroller(microcontrollerId: number): Promise<Sensor[]> {
+    const sensors = await prisma.sensor.findMany({
+      where: {
+        microcontrollerId,
+      },
+    });
+    return sensors;
+  }
 }

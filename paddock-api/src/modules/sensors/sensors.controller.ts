@@ -27,7 +27,15 @@ export default class SensorController extends Api {
     next: NextFunction
   ) => {
     try {
-      const sensors = await this.sensorService.getAllSensors();
+      const microcontrollerId = req.query.microcontrollerId ? parseInt(req.query.microcontrollerId as string, 10) : null;
+      let sensors: Sensor[];
+
+      if (microcontrollerId) {
+        sensors = await this.sensorService.getSensorsByMicrocontroller(microcontrollerId);
+      } else {
+        sensors = await this.sensorService.getAllSensors();
+      }
+
       this.send(res, sensors, HttpStatusCode.Ok, 'getAllSensors');
     } catch (e) {
       next(e);
