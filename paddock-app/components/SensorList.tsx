@@ -1,13 +1,23 @@
 // components/SensorList.tsx
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { useRouter } from "expo-router";
 import { API_URL } from '@/constants/api';
-import Sensor from '@/types/Sensor';
+import Sensor, { SensorType } from '@/types/Sensor';
 import Measurement from '@/types/Measurement';
+import { formatUTCDateToLocal } from '@/utils/date';
 
 interface Props {
   microcontrollerId: number;
+}
+
+function getReadableSensorType(type: SensorType): string {
+  switch (type) {
+    case SensorType.TEMPERATURE:
+      return 'Temperature';
+    default:
+      return 'Unknown';
+  }
 }
 
 const SensorList: React.FC<Props> = ({ microcontrollerId }) => {
@@ -21,7 +31,7 @@ const SensorList: React.FC<Props> = ({ microcontrollerId }) => {
       .then(response => response.json())
       .then(json => {
         setSensors(json.data);
-        
+
         // Fetch the newest measurement for each sensor
         json.data.forEach((sensor: Sensor) => {
           fetch(`${API_URL}/measurements/newest?sensorId=${sensor.id}`)
@@ -36,14 +46,28 @@ const SensorList: React.FC<Props> = ({ microcontrollerId }) => {
   }, [microcontrollerId]);
 
   const renderSensor = ({ item }: { item: Sensor }) => (
-    <TouchableOpacity onPress={() => router.push({ pathname: "/graph", params: { sensorId: item.id } })}>
-      <Text>{item.name}</Text>
-      {newestMeasurements[item.id] ? (
-        <Text>Newest Value: {newestMeasurements[item.id]?.value}</Text>
-      ) : (
-        <Text>Loading...</Text>
-      )}
-    </TouchableOpacity>
+    <View style={styles.sensorContainer}>
+      <Text>Name: {item.name}</Text>
+      <Text>Typ: {getReadableSensorType(item.type)}</Text>
+      <Text>
+        {newestMeasurements[item.id] ? (
+          `aktuellster Wert: ${newestMeasurements[item.id]?.value}`
+        ) : (
+          'Loading...'
+        )}
+      </Text>
+
+      <Text>
+        {newestMeasurements[item.id] ? (
+          `letzte Rückmeldung: ${formatUTCDateToLocal(newestMeasurements[item.id]?.createdAt)}`
+        ) : (
+          'Loading...'
+        )}
+      </Text>
+      <TouchableOpacity onPress={() => router.push({ pathname: "/graph", params: { sensorId: item.id } })}>
+        <Text style={styles.graphText}>Graph</Text>
+      </TouchableOpacity>
+    </View>
   );
 
   return (
@@ -54,5 +78,17 @@ const SensorList: React.FC<Props> = ({ microcontrollerId }) => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  sensorContainer: {
+    marginTop: 10,
+  },
+  sensorName: {
+    fontSize: 16,
+  },
+  graphText: {
+    color: 'blue',
+  },
+});
 
 export default SensorList;

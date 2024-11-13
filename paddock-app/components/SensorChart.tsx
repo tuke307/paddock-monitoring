@@ -4,6 +4,7 @@ import { Dimensions, View, Text } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import { API_URL } from '@/constants/api';
 import Measurement from '@/types/Measurement';
+import { formatUTCDateToLocal } from '@/utils/date';
 
 interface Props {
   sensorId: number;
@@ -11,6 +12,7 @@ interface Props {
 
 const SensorChart: React.FC<Props> = ({ sensorId }) => {
   const [measurements, setMeasurements] = useState<Measurement[]>([]);
+  const screenWidth = Dimensions.get("window").width;
 
   useEffect(() => {
     // Fetch measurements for the given sensor
@@ -25,7 +27,9 @@ const SensorChart: React.FC<Props> = ({ sensorId }) => {
   }
 
   const data = {
-    labels: measurements.map((m) => new Date(m.createdAt).toLocaleTimeString()),
+    labels: measurements
+      .map((m) => new Date(m.createdAt).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }))
+      .filter((_, index) => index % 15 === 0),
     datasets: [
       {
         data: measurements.map((m) => m.value),
@@ -34,27 +38,38 @@ const SensorChart: React.FC<Props> = ({ sensorId }) => {
     ],
   };
 
+  const chartConfig = {
+    backgroundColor: '#ffffff',
+    backgroundGradientFrom: '#ffffff',
+    backgroundGradientTo: '#ffffff',
+    decimalPlaces: 2,
+    color: (opacity = 1) => `rgba(0, 122, 255, ${opacity})`,
+    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    style: {
+      borderRadius: 16,
+      padding: 16,
+    },
+    propsForLabels: {
+      fontSize: 12,
+    },
+  };
+
   return (
-    <LineChart
-      data={data}
-      width={Dimensions.get('window').width - 32} // Adjust for padding
-      height={220}
-      chartConfig={{
-        backgroundColor: '#ffffff',
-        backgroundGradientFrom: '#ffffff',
-        backgroundGradientTo: '#ffffff',
-        decimalPlaces: 2,
-        color: (opacity = 1) => `rgba(0, 122, 255, ${opacity})`,
-        labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-        style: {
+    <View>
+      <LineChart
+        data={data}
+        width={screenWidth - 32} // Adjust for padding
+        height={300}
+        chartConfig={chartConfig}
+        style={{
           borderRadius: 16,
-        },
-      }}
-      style={{
-        marginVertical: 8,
-        borderRadius: 16,
-      }}
-    />
+        }}
+        xLabelsOffset={-10}
+        verticalLabelRotation={40}
+        withDots
+        bezier
+      />
+    </View>
   );
 };
 
