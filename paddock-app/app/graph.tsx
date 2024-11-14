@@ -1,23 +1,14 @@
-// app/(tabs)/graph.tsx
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
+import { useLocalSearchParams } from "expo-router";
 import SensorChart from '@/components/SensorChart';
-import { useRoute } from '@react-navigation/native';
 
 export default function GraphScreen() {
-  const route = useRoute();
-  const { sensorId } = route.params as { sensorId: number };
+  const { sensorId } = useLocalSearchParams<{ sensorId: string }>();
 
   return (
-    <View style={styles.container}>
+    <View className='flex-1 p-15'>
       <SensorChart sensorId={sensorId} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-});
