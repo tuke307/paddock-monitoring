@@ -1,10 +1,11 @@
 // components/SensorChart.tsx
 import React, { useEffect, useState } from 'react';
-import { Dimensions, View, Text } from 'react-native';
+import { Dimensions, View } from 'react-native';
+import { Text } from '@/components/ui/text';
 import { LineChart } from 'react-native-chart-kit';
-import { API_URL } from '@/constants/api';
+import { API_URL } from '@/lib/constants/api';
 import Measurement from '@/types/Measurement';
-import { formatUTCDateToLocal } from '@/utils/date';
+import { formatUTCDateToLocal } from '@/lib/utils/date';
 
 interface Props {
   sensorId: number;

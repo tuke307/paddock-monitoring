@@ -1,7 +1,9 @@
 // components/PaddockList.tsx
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import { API_URL } from '@/constants/api';
+import { View, FlatList } from 'react-native';
+import { Text } from '@/components/ui/text';
+import { H2 } from '@/components/ui/typography';
+import { API_URL } from '@/lib/constants/api';
 import MicrocontrollerList from '@/components/MicrocontrollerList';
 import Paddock from '@/types/Paddock';
 
@@ -18,9 +20,8 @@ const PaddockList = () => {
   }, []);
 
   const renderPaddock = ({ item }: { item: Paddock }) => (
-    <View style={styles.paddockContainer}>
-      <Text style={styles.paddockName}>{item.name}</Text>
-      <Text>{item.description}</Text>
+    <View className="p-6">
+      <H2>{item.name}</H2>
 
       <MicrocontrollerList paddockId={item.id}/>
     </View>
@@ -34,17 +35,5 @@ const PaddockList = () => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  paddockContainer: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  paddockName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-});
 
 export default PaddockList;

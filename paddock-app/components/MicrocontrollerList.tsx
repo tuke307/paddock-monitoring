@@ -1,7 +1,16 @@
 // components/MicrocontrollerList.tsx
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import { API_URL } from '@/constants/api';
+import { View, FlatList } from 'react-native';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Text } from '@/components/ui/text';
+import { API_URL } from '@/lib/constants/api';
 import SensorList from '@/components/SensorList';
 import Microcontroller from '@/types/Microcontroller';
 
@@ -22,9 +31,15 @@ const MicrocontrollerList: React.FC<Props> = ({ paddockId }) => {
   }, [paddockId]);
 
   const renderMicrocontroller = ({ item }: { item: Microcontroller }) => (
-    <View style={styles.mikrocontrollerContainer}>
-      <Text  style={styles.mikrocontrollerName}>{item.name}</Text>
-      <SensorList microcontrollerId={item.id} />
+    <View >
+      <Card className='mt-5'>
+        <CardHeader>
+          <CardTitle>{item.name}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <SensorList microcontrollerId={item.id} />
+        </CardContent>
+      </Card>
     </View>
   );
 
@@ -36,14 +51,5 @@ const MicrocontrollerList: React.FC<Props> = ({ paddockId }) => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  mikrocontrollerContainer: {
-    marginTop: 10,
-  },
-  mikrocontrollerName: {
-    fontSize: 16,
-  },
-});
 
 export default MicrocontrollerList;

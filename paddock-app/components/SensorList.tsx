@@ -1,11 +1,23 @@
 // components/SensorList.tsx
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList } from 'react-native';
+import { Text } from '@/components/ui/text';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Thermometer } from '@/lib/icons/Thermometer';
 import { useRouter } from "expo-router";
-import { API_URL } from '@/constants/api';
+import { API_URL } from '@/lib/constants/api';
 import Sensor, { SensorType } from '@/types/Sensor';
 import Measurement from '@/types/Measurement';
-import { formatUTCDateToLocal } from '@/utils/date';
+import { formatUTCDateToLocal } from '@/lib/utils/date';
 
 interface Props {
   microcontrollerId: number;
@@ -46,27 +58,25 @@ const SensorList: React.FC<Props> = ({ microcontrollerId }) => {
   }, [microcontrollerId]);
 
   const renderSensor = ({ item }: { item: Sensor }) => (
-    <View style={styles.sensorContainer}>
-      <Text>Name: {item.name}</Text>
-      <Text>Typ: {getReadableSensorType(item.type)}</Text>
-      <Text>
-        {newestMeasurements[item.id] ? (
-          `aktuellster Wert: ${newestMeasurements[item.id]?.value}`
-        ) : (
-          'Loading...'
-        )}
-      </Text>
-
-      <Text>
-        {newestMeasurements[item.id] ? (
-          `letzte Rückmeldung: ${formatUTCDateToLocal(newestMeasurements[item.id]?.createdAt)}`
-        ) : (
-          'Loading...'
-        )}
-      </Text>
-      <TouchableOpacity onPress={() => router.push({ pathname: "/graph", params: { sensorId: item.id } })}>
-        <Text style={styles.graphText}>Graph</Text>
-      </TouchableOpacity>
+    <View className='flex-1 m-3'>
+      <Card>
+        <CardHeader>
+          <View className="flex flex-row items-center">
+          <CardTitle>{item.name}</CardTitle>
+          {item.type === SensorType.TEMPERATURE && (
+            <Thermometer size={20} className="ml-3" />
+          )}
+        </View>
+        </CardHeader>
+        <CardContent>
+          <Text>Type: {getReadableSensorType(item.type)}</Text>
+          <Text>Value: {newestMeasurements[item.id] ? newestMeasurements[item.id]?.value : 'N/A'}</Text>
+          <Text>Measured at: {newestMeasurements[item.id] ? formatUTCDateToLocal(newestMeasurements[item.id]?.createdAt) : 'N/A'}</Text>
+        </CardContent>
+        <CardFooter>
+          <Button onPress={() => router.push({ pathname: "/graph", params: { sensorId: item.id } })} variant="link" className="text-blue-700">zum Graph</Button>
+        </CardFooter>
+      </Card>
     </View>
   );
 
@@ -75,20 +85,9 @@ const SensorList: React.FC<Props> = ({ microcontrollerId }) => {
       data={sensors}
       keyExtractor={(item) => item.id.toString()}
       renderItem={renderSensor}
+      numColumns={2}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  sensorContainer: {
-    marginTop: 10,
-  },
-  sensorName: {
-    fontSize: 16,
-  },
-  graphText: {
-    color: 'blue',
-  },
-});
 
 export default SensorList;

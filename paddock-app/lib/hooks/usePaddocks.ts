@@ -1,6 +1,6 @@
 // hooks/usePaddocks.ts
 import { useState, useEffect } from 'react';
-import { API_URL } from '../constants/api';
+import { API_URL } from '@/lib/constants/api';
 
 interface Paddock {
   id: number;

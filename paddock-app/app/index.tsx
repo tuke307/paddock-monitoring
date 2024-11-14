@@ -1,21 +1,12 @@
-// app/(tabs)/index.tsx
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import PaddockList from '@/components/PaddockList';
 
 export default function HomeScreen() {
   
   return (
-    <View style={styles.container}>
+    <View className="flex-1 gap-5 p-6">
       <PaddockList />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    paddingTop: 50, 
-  },
-});
