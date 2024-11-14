@@ -1,6 +1,5 @@
 import 'react-native-reanimated';
-import { Theme, DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
+import { Theme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -12,10 +11,12 @@ import { NAV_THEME } from '@/lib/constants/constants';
 import "@/global.css";
 
 const LIGHT_THEME: Theme = {
+  ...DefaultTheme,
   dark: false,
   colors: NAV_THEME.light,
 };
 const DARK_THEME: Theme = {
+  ...DefaultTheme,
   dark: true,
   colors: NAV_THEME.dark,
 };
@@ -67,7 +68,7 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="graph" options={{ title: 'Sensor Graph' }} />
-        <Stack.Screen name="+not-found" />
+        <Stack.Screen name="+not-found" options={{ title: 'Not Found' }} />
       </Stack>
     </ThemeProvider>
   );

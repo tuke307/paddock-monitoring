@@ -8,7 +8,7 @@ import Measurement from '@/types/Measurement';
 import { formatUTCDateToLocal } from '@/lib/utils/date';
 
 interface Props {
-  sensorId: number;
+  sensorId: string | string[] | undefined;  // Accept string from URL params
 }
 
 const SensorChart: React.FC<Props> = ({ sensorId }) => {
@@ -59,7 +59,7 @@ const SensorChart: React.FC<Props> = ({ sensorId }) => {
     <View>
       <LineChart
         data={data}
-        width={screenWidth - 32} // Adjust for padding
+        width={screenWidth - 32} 
         height={300}
         chartConfig={chartConfig}
         style={{
