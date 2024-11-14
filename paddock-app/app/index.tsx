@@ -5,7 +5,7 @@ import PaddockList from '@/components/PaddockList';
 export default function HomeScreen() {
   
   return (
-    <View className="flex-1 gap-5 p-6">
+    <View className="flex-1 gap-5">
       <PaddockList />
     </View>
   );
