@@ -1,9 +1,9 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-// Wi-Fi credentials (used by the receiver)
-#define WIFI_SSID "your-ssid"
-#define WIFI_PASSWORD "your-password"
+#include "Secrets.h"
+
+// Wi-Fi credentials moved to secrets file
 
 // API endpoint (used by the receiver)
 #define API_URL "https://api-paddockmonitoring-prod.azurewebsites.net:443/api/v1/production/measurements/create"
@@ -29,4 +29,4 @@
 #define OLED_SDA_PIN 17 // GPIO for SDA
 #define OLED_RST_PIN 21 // GPIO for RST (if connected)
 
-#endif // COMMON_H
+#endif
