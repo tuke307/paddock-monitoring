@@ -58,8 +58,8 @@ const SensorList: React.FC<Props> = ({ microcontrollerId }) => {
   }, [microcontrollerId]);
 
   const renderSensor = ({ item }: { item: Sensor }) => (
-    <View className='flex-1 m-3'>
-      <Card>
+    <View className='flex-1'>
+      <Card className='h-[300px] flex flex-col justify-between'>
         <CardHeader>
           <View className="flex flex-row items-center">
           <CardTitle>{item.name}</CardTitle>
@@ -86,6 +86,8 @@ const SensorList: React.FC<Props> = ({ microcontrollerId }) => {
       keyExtractor={(item) => item.id.toString()}
       renderItem={renderSensor}
       numColumns={2}
+      contentContainerStyle={{ gap: 10 }}
+      columnWrapperStyle={{ gap: 10 }}
     />
   );
 };
