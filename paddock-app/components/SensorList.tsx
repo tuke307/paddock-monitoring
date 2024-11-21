@@ -74,7 +74,7 @@ const SensorList: React.FC<Props> = ({ microcontrollerId }) => {
           <Text>Measured at: {newestMeasurements[item.id] ? formatUTCDateToLocal(newestMeasurements[item.id]?.createdAt) : 'N/A'}</Text>
         </CardContent>
         <CardFooter>
-          <Button onPress={() => router.push(`/graph?sensorId=${item.id}`)} variant="link" className="text-blue-700">zum Graph</Button>
+          <Button onPress={() => router.push(`/graph?sensorId=${item.id}`)} variant="link"><Text>zum Graph</Text></Button>
         </CardFooter>
       </Card>
     </View>
