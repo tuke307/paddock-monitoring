@@ -32,7 +32,7 @@ const MicrocontrollerList: React.FC<Props> = ({ paddockId }) => {
 
   const renderMicrocontroller = ({ item }: { item: Microcontroller }) => (
     <View >
-      <Card className='mt-5'>
+      <Card className='mt-3'>
         <CardHeader>
           <CardTitle>{item.name}</CardTitle>
         </CardHeader>

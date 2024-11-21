@@ -1,12 +1,14 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
 import PaddockList from '@/components/PaddockList';
 
 export default function HomeScreen() {
   
   return (
-    <View className="flex-1 gap-5">
-      <PaddockList />
-    </View>
+    <SafeAreaView className='flex-1'>
+      <View className='flex-1'>
+        <PaddockList />
+      </View>
+    </SafeAreaView>
   );
 }
