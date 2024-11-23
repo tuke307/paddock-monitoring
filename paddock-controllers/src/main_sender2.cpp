@@ -3,6 +3,7 @@
 #include "Common.h"
 #include "LoRaCommunication.h"
 #include "OLEDDisplay.h"
+#include "TemperatureSensor.h"
 
 
 void setup() {
@@ -16,15 +17,29 @@ void setup() {
     // Initialize LoRa communication
     LoRaCommunication::init();
 
+    // Initialize temperature sensor using build flag
+    TemperatureSensor::init(TEMP_SENSOR_PIN);
+
     // Seed the random number generator
     randomSeed(analogRead(34)); // Using a different analog pin
 }
 
 void loop() {
+    // Read temperature
+    float temperature = -127.0;
+    if (TemperatureSensor::isConnected()) {
+        temperature = TemperatureSensor::readTemperature();
+        Serial.print("Temperature: ");
+        Serial.print(temperature);
+        Serial.println(" °C");
+    } else {
+        Serial.println("Sensor is not connected.");
+    }
+
     // Prepare the data to send
     JsonDocument doc;
-    doc["value"] = 22.0; // Replace with actual sensor reading
-    doc["sensorId"] = CONTROLLER_ID; // ToDo: implement sensor
+    doc["value"] = temperature;
+    doc["sensorId"] = CONTROLLER_ID;
 
     String message;
     serializeJson(doc, message);
