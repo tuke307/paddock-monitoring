@@ -33,7 +33,7 @@ model Microcontroller {
   updatedAt    DateTime @updatedAt
   paddockId    Int?
 
-  paddock Paddock? @relation(fields: [paddockId], references: [id])
+  paddock Paddock? @relation(fields: [paddockId], references: [id], onDelete: SetNull)
   sensors Sensor[]
 }
 
@@ -51,7 +51,7 @@ model Sensor {
   microcontrollerId Int
 
   measurements    Measurement[]
-  microcontroller Microcontroller @relation(fields: [microcontrollerId], references: [id])
+  microcontroller Microcontroller @relation(fields: [microcontrollerId], references: [id], onDelete: Cascade)
 }
 
 model Measurement {
@@ -60,5 +60,5 @@ model Measurement {
   sensorId  Int
   createdAt DateTime @default(now())
 
-  sensor Sensor @relation(fields: [sensorId], references: [id])
+  sensor Sensor @relation(fields: [sensorId], references: [id], onDelete: Cascade)
 }
