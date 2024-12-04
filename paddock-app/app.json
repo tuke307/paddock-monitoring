@@ -13,7 +13,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.tonyluke.paddockmonitoring.ios"
     },
     "android": {
       "adaptiveIcon": {
@@ -31,6 +32,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "d40c9032-4b21-4258-ac85-ecaa6d19a7f7"
+      }
     }
   }
 }
