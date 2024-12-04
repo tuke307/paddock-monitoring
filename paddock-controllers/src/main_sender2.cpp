@@ -11,7 +11,7 @@ void setup() {
 
     // Initialize OLED display
     OLEDDisplay::init();
-    OLEDDisplay::displayText("Initializing...");
+    OLEDDisplay::displayText("Initializing...", 0, true);
     delay(1000);
 
     // Initialize LoRa communication

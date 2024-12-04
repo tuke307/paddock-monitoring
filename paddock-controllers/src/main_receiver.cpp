@@ -12,7 +12,7 @@ void setup() {
 
     // Initialize OLED display
     OLEDDisplay::init();
-    OLEDDisplay::displayText("Initializing...");
+    OLEDDisplay::displayText("Initializing...", 0, true);
     delay(1000);
 
     // Initialize Wi-Fi connection
@@ -23,6 +23,9 @@ void setup() {
 
     // Initialize API client
     ApiClient::init();
+
+    OLEDDisplay::displayText("Waiting for messages...", 0, true);
+    delay(1000);
 }
 
 void loop() {

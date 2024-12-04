@@ -7,7 +7,7 @@ namespace OLEDDisplay {
 
 void init();
 void clear();
-void displayText(const String& text);
+int displayText(const String& text, int y = 0, bool clearBuffer = false);
 void displayDataAndStatus(int controllerId, float value, int sensorId, const String& status);
 
 }

@@ -2,24 +2,28 @@
 #include "OLEDDisplay.h"
 #include "Common.h"
 
-// U8g2 instance
-// Adjust the constructor according to your display type and communication interface
-U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock=*/ OLED_SCL_PIN, /* data=*/ OLED_SDA_PIN, /* reset=*/ OLED_RST_PIN);
+/*
+U8g2 instance with 270-degree rotation
+
+U8G2_R0 = no rotation
+U8G2_R1 = 90 degree rotation
+U8G2_R2 = 180 degree rotation
+U8G2_R3 = 270 degree rotation
+*/ 
+U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(
+    U8G2_R3,
+    /* clock=*/ OLED_SCL_PIN,
+    /* data=*/ OLED_SDA_PIN,
+    /* reset=*/ OLED_RST_PIN
+);
 
 namespace OLEDDisplay {
-
-// Spinner state variables
-const int SPINNER_DOTS = 8;           // Number of dots in the spinner
-int spinnerStep = 0;                   // Current step in the spinner animation
-const int spinnerRadius = 6;           // Radius of the spinner circle
-const int spinnerCenterX = 120;        // X-coordinate of spinner center (top-right corner)
-const int spinnerCenterY = 8;          // Y-coordinate of spinner center
 
 void init() {
     Serial.println("[OLED] Initializing OLED display...");
     u8g2.begin();
     u8g2.clearDisplay();
-    u8g2.setFont(u8g2_font_5x7_tr);
+    u8g2.setFont(u8g2_font_6x12_tr); // Medium-sized font
     Serial.println("[OLED] OLED display initialized.");
 }
 
@@ -27,32 +31,71 @@ void clear() {
     u8g2.clearDisplay();
 }
 
-void displayText(const String& text) {
-    u8g2.clearBuffer();
-    u8g2.drawStr(0, 24, text.c_str());
-    u8g2.sendBuffer();
+int displayText(const String& text, int y, bool clearBuffer) {
+    if (clearBuffer) {
+        u8g2.clearBuffer();
+    }
+
+    u8g2.setFont(u8g2_font_6x12_tr);
+
+    int maxWidth = u8g2.getDisplayWidth();
+    int lineHeight = u8g2.getMaxCharHeight();
+    if (y == 0) {
+        y = lineHeight;
+    }
+
+    String line;
+    for (int i = 0; i < text.length(); i++) {
+        line += text[i];
+        int lineWidth = u8g2.getStrWidth(line.c_str());
+
+        if (lineWidth > maxWidth) {
+            int lastSpace = line.lastIndexOf(' ');
+            if (lastSpace != -1) {
+                String toDraw = line.substring(0, lastSpace);
+                u8g2.drawStr(0, y, toDraw.c_str());
+                line = line.substring(lastSpace + 1);
+            } else {
+                u8g2.drawStr(0, y, line.c_str());
+                line = "";
+            }
+            y += lineHeight;
+        }
+    }
+
+    if (line.length() > 0) {
+        u8g2.drawStr(0, y, line.c_str());
+        y += lineHeight;  // Increment y after the last line
+    }
+
+    if (clearBuffer) {
+        u8g2.sendBuffer();
+    }
+
+    return y;
 }
 
 void displayDataAndStatus(int controllerId, float value, int sensorId, const String& status) {
     u8g2.clearBuffer();
 
-    u8g2.setCursor(0, 16);
-    u8g2.print("Controller Id: ");
-    u8g2.print(controllerId);
+    u8g2.setFont(u8g2_font_6x12_tr);
 
-    // Display the sensor ID and value on one line
-    u8g2.setCursor(0, 48);
-    u8g2.print("Sensor (Id ");
-    u8g2.print(sensorId); 
-    u8g2.print(", Value ");
-    u8g2.print(value);
-    u8g2.print(")");
+    int lineHeight = u8g2.getMaxCharHeight();
+    int y = lineHeight;
 
-    u8g2.setCursor(0, 64);
-    u8g2.print("Status: ");
-    u8g2.print(status);
+    // Prepare the text lines with abbreviated labels
+    String line1 = "Ctrl ID: " + String(controllerId);
+    String line2 = "Sens ID: " + String(sensorId);
+    String line3 = "Value: " + String(value);
+    String line4 = "Status: " + status;
 
-    u8g2.sendBuffer();
+    // Display each line using displayText to handle wrapping
+    y = displayText(line1, y);  // Update y after each call
+    y = displayText(line2, y);
+    y = displayText(line3, y);
+    y = displayText(line4, y);
+
+    u8g2.sendBuffer();  // Update the display after all lines are drawn
 }
 
 }
