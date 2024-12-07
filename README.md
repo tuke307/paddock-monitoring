@@ -1,6 +1,6 @@
 # paddock monitoring
 
-![architecture](./docs/paddock-overview.png)
+![architecture](./docs/paddock-architecture.png)
 
 ## Projects
 
