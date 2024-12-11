@@ -84,34 +84,7 @@ function generateNextTemperature(previous: number): number {
   return Math.round(next * 10) / 10;
 }
 
-async function main() {
-  // Clean up the existing database
-  await prisma.measurement.deleteMany();
-  await prisma.sensor.deleteMany();
-  await prisma.microcontroller.deleteMany();
-  await prisma.paddock.deleteMany();
-
-  // Seed paddocks
-  for (const paddock of paddocks) {
-    await prisma.paddock.create({
-      data: paddock,
-    });
-  }
-
-  // Seed microcontrollers
-  for (const microcontroller of microcontrollers) {
-    await prisma.microcontroller.create({
-      data: microcontroller,
-    });
-  }
-
-  // Seed sensors
-  for (const sensor of sensors) {
-    await prisma.sensor.create({
-      data: sensor,
-    });
-  }
-
+async function generateMeasurements() {
   // Define the date range for measurements, local time
   const startDate = new Date('2024-07-01T00:00:00');
   const endDate = new Date('2024-11-26T23:59:59');
@@ -145,7 +118,48 @@ async function main() {
     }
   }
 
-  // Bulk create measurements for better performance
+  return measurementsToCreate;
+}
+
+async function main() {
+  // Clean up the existing database
+  await prisma.measurement.deleteMany();
+  await prisma.sensor.deleteMany();
+  await prisma.microcontroller.deleteMany();
+  await prisma.paddock.deleteMany();
+
+  // Seed paddocks
+  for (const paddock of paddocks) {
+    await prisma.paddock.create({
+      data: paddock,
+    });
+  }
+
+  // Reset auto-increment sequence for paddocks
+  await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Paddock"', 'id'), COALESCE(MAX(id), 1)) FROM "Paddock";`;
+
+  // Seed microcontrollers
+  for (const microcontroller of microcontrollers) {
+    await prisma.microcontroller.create({
+      data: microcontroller,
+    });
+  }
+
+  // Reset auto-increment sequence for microcontrollers
+  await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Microcontroller"', 'id'), COALESCE(MAX(id), 1)) FROM "Microcontroller";`;
+
+  // Seed sensors
+  for (const sensor of sensors) {
+    await prisma.sensor.create({
+      data: sensor,
+    });
+  }
+
+  // Reset auto-increment sequence for sensors
+  await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Sensor"', 'id'), COALESCE(MAX(id), 1)) FROM "Sensor";`;
+
+  // Seed measurements
+  const measurementsToCreate = await generateMeasurements();
   await prisma.measurement.createMany({
     data: measurementsToCreate,
   });
