@@ -19,25 +19,25 @@ const paddocks = [
 const microcontrollers = [
   {
     id: 1,
-    name: 'Heltec WiFi LoRa 32 V3 - 1',
-    manufacturer: 'Heltec',
-    masterChip: 'ESP32-S3FN8',
-    loraChip: 'SX1262',
-    location: 'in schwarzer Plastikbox auf der unteren Koppel',
-    paddockId: 1
-  },
-  {
-    id: 2,
-    name: 'Heltec WiFi LoRa 32 V3 - 2',
+    name: 'Microcontroller oben - 1',
     manufacturer: 'Heltec',
     masterChip: 'ESP32-S3FN8',
     loraChip: 'SX1262',
     location: 'in schwarzer Plastikbox auf der oberen Koppel',
+    paddockId: 1
+  },
+  {
+    id: 2,
+    name: 'Microcontroller unten - 2',
+    manufacturer: 'Heltec',
+    masterChip: 'ESP32-S3FN8',
+    loraChip: 'SX1262',
+    location: 'in schwarzer Plastikbox auf der unteren Koppel',
     paddockId: 2
   },
   {
     id: 3,
-    name: 'Heltec WiFi LoRa 32 V3 - 3',
+    name: 'Microcontroller Haus - 3',
     manufacturer: 'Heltec',
     masterChip: 'ESP32-S3FN8',
     loraChip: 'SX1262',
@@ -48,14 +48,14 @@ const microcontrollers = [
 const sensors = [
   {
     id: 1,
-    name: 'Sensor 1',
+    name: 'Sensor oben - 1',
     type: SensorType.TEMPERATURE,
     location: 'an Microcontroller 1, obere Koppel',
     microcontrollerId: 1
   },
   {
     id: 2,
-    name: 'Sensor 2',
+    name: 'Sensor unten - 2',
     type: SensorType.TEMPERATURE,
     location: 'an Microcontroller 2, untere Koppel',
     microcontrollerId: 2
