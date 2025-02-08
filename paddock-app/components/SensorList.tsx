@@ -64,7 +64,7 @@ const SensorList: React.FC<Props> = ({ microcontrollerId }) => {
           <View className="flex flex-row items-center">
           <CardTitle>{item.name}</CardTitle>
           {item.type === SensorType.TEMPERATURE && (
-            <Thermometer size={20} className="ml-3" />
+            <Thermometer size={20} className="ml-3 text-foreground"/>
           )}
         </View>
         </CardHeader>
