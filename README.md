@@ -1,4 +1,5 @@
 # paddock monitoring
+![mockup](./docs/mockup-iphone-16-pro.png)
 
 ![architecture](./docs/paddock-architecture.png)
 
