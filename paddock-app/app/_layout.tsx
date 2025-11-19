@@ -4,9 +4,8 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Platform } from 'react-native';
+import { Platform, Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useColorScheme } from '@/lib/hooks/useColorScheme';
 import { NAV_THEME } from '@/lib/constants/constants';
 import "@/global.css";
 
@@ -30,7 +29,7 @@ export {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
+  const [colorScheme, setColorScheme] = useState<'light' | 'dark'>(Appearance.getColorScheme() ?? 'light');
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = useState(false);
 
   useEffect(() => {
@@ -41,17 +40,14 @@ export default function RootLayout() {
         document.documentElement.classList.add('bg-background');
       }
       if (!theme) {
-        AsyncStorage.setItem('theme', colorScheme);
+        const systemColorScheme = Appearance.getColorScheme() ?? 'light';
+        await AsyncStorage.setItem('theme', systemColorScheme);
+        setColorScheme(systemColorScheme);
         setIsColorSchemeLoaded(true);
         return;
       }
       const colorTheme = theme === 'dark' ? 'dark' : 'light';
-      if (colorTheme !== colorScheme) {
-        setColorScheme(colorTheme);
-
-        setIsColorSchemeLoaded(true);
-        return;
-      }
+      setColorScheme(colorTheme);
       setIsColorSchemeLoaded(true);
     })().finally(() => {
       SplashScreen.hideAsync();
@@ -61,6 +57,8 @@ export default function RootLayout() {
   if (!isColorSchemeLoaded) {
     return null;
   }
+
+  const isDarkColorScheme = colorScheme === 'dark';
 
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
