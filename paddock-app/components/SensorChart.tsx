@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Dimensions, View, useColorScheme } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { LineChart } from 'react-native-chart-kit';
 import { API_URL } from '@/lib/constants/api';
 import Measurement from '@/types/Measurement';
 import { Button } from './ui/button';
+import { useTheme } from '@react-navigation/native';
 
 interface Props {
   sensorId: string | string[] | undefined;  // Accept string from URL params
@@ -16,7 +17,8 @@ const SensorChart: React.FC<Props> = ({ sensorId }) => {
   const [timeRange, setTimeRange] = useState<TimeRange>('24h');
   const screenWidth = Dimensions.get("window").width;
   const [loading, setLoading] = useState(true);
-  const colorScheme = useColorScheme() ?? 'light';
+  const theme = useTheme();
+  const colorScheme = theme.dark ? 'dark' : 'light';
   const [useAbsoluteDates, setUseAbsoluteDates] = useState(false);
 
   // Convert CSS HSL to rgba
@@ -99,9 +101,8 @@ const SensorChart: React.FC<Props> = ({ sensorId }) => {
   };
 
   const chartConfig = {
-    backgroundColor: colorScheme === 'dark' ? hslToRgba(24, 9.8, 10) : '#ffffff',
-    //backgroundGradientFrom: colorScheme === 'dark' ? hslToRgba(24, 9.8, 10) : '#ffffff',
-    //backgroundGradientTo: colorScheme === 'dark' ? hslToRgba(24, 9.8, 10) : '#ffffff',
+    backgroundGradientFrom: colorScheme === 'dark' ? hslToRgba(24, 9.8, 10) : '#ffffff',
+    backgroundGradientTo: colorScheme === 'dark' ? hslToRgba(24, 9.8, 10) : '#ffffff',
     decimalPlaces: 2,
     color: (opacity = 1) => colorScheme === 'dark'
       ? hslToRgba(142.1, 70.6, 45.3, opacity) // primary in dark mode
