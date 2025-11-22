@@ -1,5 +1,5 @@
 # Build stage
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 
 # Set working directory
 WORKDIR /app
@@ -20,7 +20,7 @@ COPY . .
 RUN npx expo export -p web
 
 # Serve stage
-FROM node:18-alpine AS serve
+FROM node:20-alpine AS serve
 
 # Copy build files from previous stage
 WORKDIR /app

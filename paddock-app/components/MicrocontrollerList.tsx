@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Text } from '@/components/ui/text';
 import { API_URL } from '@/lib/constants/api';
 import SensorList from '@/components/SensorList';
 import Microcontroller from '@/types/Microcontroller';

@@ -1,7 +1,6 @@
 // components/PaddockList.tsx
 import React, { useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
-import { Text } from '@/components/ui/text';
 import { H2 } from '@/components/ui/typography';
 import { API_URL } from '@/lib/constants/api';
 import MicrocontrollerList from '@/components/MicrocontrollerList';

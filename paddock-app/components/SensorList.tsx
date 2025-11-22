@@ -5,13 +5,11 @@ import { Text } from '@/components/ui/text';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Thermometer } from '@/lib/icons/Thermometer';
 import { useRouter } from "expo-router";
 import { API_URL } from '@/lib/constants/api';
