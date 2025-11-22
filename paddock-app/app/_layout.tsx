@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { Platform, Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NAV_THEME } from '@/lib/constants/constants';
+import { PortalHost } from '@rn-primitives/portal';
 import "@/global.css";
 
 const LIGHT_THEME: Theme = {
@@ -68,6 +69,7 @@ export default function RootLayout() {
         <Stack.Screen name="graph" options={{ title: 'Sensor Graph' }} />
         <Stack.Screen name="+not-found" options={{ title: 'Not Found' }} />
       </Stack>
+      <PortalHost />
     </ThemeProvider>
   );
 }
