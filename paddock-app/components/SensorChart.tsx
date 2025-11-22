@@ -5,7 +5,7 @@ import { LineChart } from 'react-native-chart-kit';
 import { API_URL } from '@/lib/constants/api';
 import Measurement from '@/types/Measurement';
 import { Button } from './ui/button';
-import { useTheme } from '@react-navigation/native';
+import { useThemeContext } from '@/lib/hooks/useThemeContext';
 
 interface Props {
   sensorId: string | string[] | undefined;  // Accept string from URL params
@@ -17,8 +17,7 @@ const SensorChart: React.FC<Props> = ({ sensorId }) => {
   const [timeRange, setTimeRange] = useState<TimeRange>('24h');
   const screenWidth = Dimensions.get("window").width;
   const [loading, setLoading] = useState(true);
-  const theme = useTheme();
-  const colorScheme = theme.dark ? 'dark' : 'light';
+  const { colorScheme } = useThemeContext();
   const [useAbsoluteDates, setUseAbsoluteDates] = useState(false);
 
   // Convert CSS HSL to rgba

@@ -3,11 +3,12 @@ import { Theme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
-import { Platform, Appearance } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
+import { Platform, View } from 'react-native';
 import { NAV_THEME } from '@/lib/constants/constants';
 import { PortalHost } from '@rn-primitives/portal';
+import { ThemeContextProvider, useThemeContext } from '@/lib/hooks/useThemeContext';
+import { ThemeSwitch } from '@/components/ThemeSwitch';
 import "@/global.css";
 
 const LIGHT_THEME: Theme = {
@@ -29,33 +30,23 @@ export {
 // Prevent the splash screen from auto-hiding before getting the color scheme.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
-  const [colorScheme, setColorScheme] = useState<'light' | 'dark'>(Appearance.getColorScheme() ?? 'light');
-  const [isColorSchemeLoaded, setIsColorSchemeLoaded] = useState(false);
+function RootLayoutContent() {
+  const { colorScheme, isLoaded } = useThemeContext();
 
   useEffect(() => {
-    (async () => {
-      const theme = await AsyncStorage.getItem('theme');
-      if (Platform.OS === 'web') {
-        // Adds the background color to the html element to prevent white background on overscroll.
-        document.documentElement.classList.add('bg-background');
-      }
-      if (!theme) {
-        const systemColorScheme = Appearance.getColorScheme() ?? 'light';
-        await AsyncStorage.setItem('theme', systemColorScheme);
-        setColorScheme(systemColorScheme);
-        setIsColorSchemeLoaded(true);
-        return;
-      }
-      const colorTheme = theme === 'dark' ? 'dark' : 'light';
-      setColorScheme(colorTheme);
-      setIsColorSchemeLoaded(true);
-    })().finally(() => {
-      SplashScreen.hideAsync();
-    });
+    if (Platform.OS === 'web') {
+      // Adds the background color to the html element to prevent white background on overscroll.
+      document.documentElement.classList.add('bg-background');
+    }
   }, []);
 
-  if (!isColorSchemeLoaded) {
+  useEffect(() => {
+    if (isLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [isLoaded]);
+
+  if (!isLoaded) {
     return null;
   }
 
@@ -69,7 +60,18 @@ export default function RootLayout() {
         <Stack.Screen name="graph" options={{ title: 'Sensor Graph' }} />
         <Stack.Screen name="+not-found" options={{ title: 'Not Found' }} />
       </Stack>
+      <View className='absolute bottom-4 right-4 z-50'>
+        <ThemeSwitch />
+      </View>
       <PortalHost />
     </ThemeProvider>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <ThemeContextProvider>
+      <RootLayoutContent />
+    </ThemeContextProvider>
   );
 }
