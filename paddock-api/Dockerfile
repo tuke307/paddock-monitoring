@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM node:18 AS build
+FROM node:25 AS build
 
 # Set working directory
 WORKDIR /app
@@ -20,7 +20,7 @@ COPY .env.example .env
 RUN npm run build
 
 # Stage 2: Production
-FROM node:18 AS production
+FROM node:25 AS production
 
 # Set working directory
 WORKDIR /app
