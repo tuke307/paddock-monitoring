@@ -1,3 +1,4 @@
+import "@/global.css";
 import 'react-native-reanimated';
 import { Theme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
@@ -9,7 +10,7 @@ import { NAV_THEME } from '@/lib/constants/constants';
 import { PortalHost } from '@rn-primitives/portal';
 import { ThemeContextProvider, useThemeContext } from '@/lib/hooks/useThemeContext';
 import { ThemeSwitch } from '@/components/ThemeSwitch';
-import "@/global.css";
+
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
